@@ -1,23 +1,23 @@
-chrome.devtools.panels.create(
-  "Konva Inspector",
-  "images/ghost_32.png",
-  "panel.html",
-  function(panel) {
-    console.log(panel);
-  }
-);
+chrome.devtools.panels.create('Kad', 'images/ghost_32.png', 'panel.html', function (panel) {
+  // var port = chrome.runtime.connect({
+  //   name: 'KonvaInspector',
+  // })
 
-var backgroundPageConnection = chrome.runtime.connect({
-  name: "Konva Inspector",
-});
+  // port.postMessage({
+  //   tabId: chrome.devtools.inspectedWindow.tabId,
+  // })
 
-backgroundPageConnection.onMessage.addListener(function(message) {
-  console.log("onmessage", message);
-  // Handle responses from the background page, if any
-});
+  // port.onMessage.addListener(function (message) {
+  //   console.log('devtools onmessage', message)
+  // })
 
-// Relay the tab ID to the background page
-backgroundPageConnection.postMessage({
-  tabId: chrome.devtools.inspectedWindow.tabId,
-  scriptToInject: "content_script.js",
-});
+  panel.onShown.addListener(panelWindow => {
+    chrome.runtime.sendMessage({ panelShown: true })
+    chrome.runtime.onMessage.addListener(e => {
+      const { stageData } = e || {}
+      if (stageData) {
+        panelWindow.render(stageData)
+      }
+    })
+  })
+})

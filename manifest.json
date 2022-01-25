@@ -2,27 +2,25 @@
   "name": "Konva Developer Tools",
   "description": "A Konva.js DevTools Plugin to inspect Konva Nodes of Canvas",
   "version": "1.0",
-  "manifest_version": 10,
+  "manifest_version": 2,
   "background": {
     "service_worker": "background.js"
   },
-  "devtools_page": "devtools.html",
-  "permissions": ["storage"],
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "/images/lollipop_16.png",
-      "32": "/images/lollipop_32.png",
-      "48": "/images/lollipop_64.png",
-      "128": "/images/lollipop_128.png"
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "all_frames": true,
+      "js": ["inject.js"],
+      "run_at": "document_idle"
     }
-  },
-
+  ],
+  "devtools_page": "devtools.html",
   "icons": {
     "16": "/images/lollipop_16.png",
     "32": "/images/lollipop_32.png",
     "48": "/images/lollipop_64.png",
     "128": "/images/lollipop_128.png"
   },
-  "permissions": ["storage", "activeTab", "scripting"]
+  "permissions": ["storage", "activeTab", "scripting"],
+  "web_accessible_resources": ["detector.js", "detector.js"]
 }

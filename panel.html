@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inspector Panel</title>
     <link rel="stylesheet" href="/panel.css" />
+    <script type="module" src="panel.js"></script>
   </head>
   <body>
     <div class="elements">
@@ -13,12 +14,14 @@
     </div>
     <div class="sidebar">
       <ul class="tabs">
-        <li class="tab selected">
+        <li class="tab selected attrs-tab">
           <button class="plain-btn">Attributes</button>
         </li>
-        <li class="tab"><button class="plain-btn">Properties</button></li>
+        <li class="tab props-tab"><button class="plain-btn">Properties</button></li>
       </ul>
+      <div class="panel-body">
+        <ul class="prop-list"></ul>
+      </div>
     </div>
-    <script src="panel.js"></script>
   </body>
 </html>
