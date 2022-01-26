@@ -4,6 +4,7 @@ body {
   display: flex;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 }
 
 .elements {
@@ -20,19 +21,22 @@ body {
   overflow: auto;
   font-size: 12px;
   padding: 3px 0;
+  box-sizing: border-box;
 }
 
 .elements-path {
   font-size: 12px;
   border-top: 1px solid #ccc;
   background: #fff;
-  min-height: 24px;
   margin-top: auto;
 }
 
 .elements-path .plain-btn {
   padding: 2px 4px;
   color: #a11889;
+}
+.elements-path .plain-btn:last-of-type {
+  background: #eee;
 }
 
 .sidebar {
@@ -74,6 +78,10 @@ body {
   font: inherit;
 }
 
+.plain-btn:hover {
+  background: #ddd;
+}
+
 .node-item {
   display: block;
 }
@@ -99,6 +107,7 @@ body {
   cursor: pointer;
   text-align: center;
   color: #444;
+  user-select: none;
 }
 
 .node-item:not(.closed) > .node-name-row .expand {
@@ -110,7 +119,6 @@ body {
 
 .node-name {
   display: inline-block;
-  user-select: none;
   color: #a11889;
   cursor: pointer;
 }

@@ -5,6 +5,10 @@ const makeSelector = node => {
     className,
     attrs: { name, id },
   } = node
+  if (id) {
+    return `#${id}`
+  }
+
   const nameList = (name || '')
     .trim()
     .split(/\s+/g)
@@ -12,7 +16,7 @@ const makeSelector = node => {
     .map(name => `.${name}`)
     .join('')
 
-  return [`${className}`, id ? `#${id}` : '', nameList].join('').trim()
+  return `${className}${nameList}`
 }
 
 const renderItem = node => {
@@ -79,16 +83,14 @@ const renderPath = selector => {
 const getSelector = (el, selectors = []) => {
   const item = el.closest('.node-item')
   const selector = item.dataset.selector
-  const parent = item.parent?.closest('.node-item')
-
-  console.log(selectors)
+  const parent = item.parentElement?.closest('.node-item')
 
   selectors.unshift(selector)
 
   if (parent) {
     return getSelector(parent, selectors)
   }
-  return selectors.join('')
+  return selectors.join(' ')
 }
 
 window.render = stageData => {
@@ -108,7 +110,6 @@ window.render = stageData => {
 
     if (item) {
       const selector = getSelector(item)
-      console.log(item, selector)
       const [node] = query({ children: [stageData] }, selector)
       if (node) {
         inspectedNode = node

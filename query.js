@@ -2,24 +2,24 @@ const isShape = node => node.className
 const isString = t => typeof t === 'string'
 
 export const isIdSelector = s => s.startsWith('#')
-export const isNameSelector = s => s.startsWith('.')
-export const isNodeSelector = s => s.match(/^[_a-zA-Z]/)
+export const isClassSelector = s => s.startsWith('.')
+export const isNameSelector = s => /^[\w-_]+/.test(s)
 export const match = (node, selector) => {
-  const nameMatched = selector.match(/^([_a-zA-Z]+)/)
-  const classMatched = selector.match(/\.([_a-zA-Z]+)/)
-  const idMatched = selector.match(/\#([_a-zA-Z]+)/)
-  let matched = true
-  if (classMatched) {
-    matched = matched && node.attrs.name?.indexOf(classMatched[1]) >= 0
-  }
-  if (idMatched) {
-    matched = matched && node.attrs.id === idMatched[1]
-  }
-  if (nameMatched) {
-    matched = matched && node.className === nameMatched[1]
-  }
-
-  return matched
+  const selectors = selector.match(/([#\.]?[\w-_]+)/g)
+  const result = selectors.every(selector => {
+    const word = selector.slice(1)
+    if (isIdSelector(selector)) {
+      return word === node.attrs.id
+    }
+    if (isClassSelector(selector)) {
+      return node.attrs.name.indexOf(word) >= 0
+    }
+    if (isNameSelector(selector)) {
+      return selector === node.className
+    }
+  })
+  console.log('match', node, selector, result)
+  return result
 }
 
 export const treeFind = (node, selector, result = []) => {
@@ -84,7 +84,7 @@ const find = (container, selector) => {
     nodes = treeFind(container, coreSelector[1])
   }
 
-  if (!selector || !(nodes === null || nodes === void 0 ? void 0 : nodes.length)) {
+  if (!selector || !nodes?.length) {
     return nodes
   }
   const attrSelector = selector.match(attrSelectorPattern)
